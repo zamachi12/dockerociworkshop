@@ -34,11 +34,13 @@ jobs:
 
     - name: Buildah Action
       uses: redhat-actions/buildah-build@v2
+      id: build_image
       with:
         image: my-new-image
         tags: v1 ${{ github.sha }}
         containerfiles: |
           ./containerfile
+       
 
     - name: Push To GHCR
       uses: redhat-actions/push-to-registry@v2
