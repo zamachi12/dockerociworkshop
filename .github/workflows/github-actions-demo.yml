@@ -7,18 +7,6 @@ env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   
 jobs:
-
-  login:
-      name: Log in to GitHub Container Registry
-      runs-on: ubuntu-20.04
-      steps:
-        - name: Log in to ghcr.io
-          uses: redhat-actions/podman-login@v1
-          with:
-            username: ${{ env.REGISTRY_USER }}
-            password: ${{ env.REGISTRY_PASSWORD }}
-            registry: ${{ env.IMAGE_REGISTRY }}
-
   build:
     name: Build image
     runs-on: ubuntu-latest
@@ -28,6 +16,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - name: Buildah Action
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: my-new-image
+        tags: v1 ${{ github.sha }}
+        containerfiles: |
+          ./fedoradockercontainer
+          
+    - name: Log in to ghcr.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: ${{ env.REGISTRY_USER }}
+        password: ${{ env.REGISTRY_PASSWORD }}
+        registry: ${{ env.IMAGE_REGISTRY }}
 
     - name: Buildah Action
       uses: redhat-actions/buildah-build@v2
@@ -36,3 +39,25 @@ jobs:
         tags: v1 ${{ github.sha }}
         containerfiles: |
           ./fedoradockercontainer
+
+    - name: Push To GHCR
+      uses: ./
+      id: push
+      with:
+        image: ${{ steps.build_image.outputs.image }}
+        tags: ${{ steps.build_image.outputs.tags }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+        username: ${{ env.REGISTRY_USER }}
+        password: ${{ env.REGISTRY_PASSWORD }}
+
+  
+     
+
+      
+
+          
+
+      
+ 
+
+    
