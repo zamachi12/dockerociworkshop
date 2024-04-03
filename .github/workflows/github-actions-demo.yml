@@ -44,6 +44,12 @@ jobs:
         username: ${{ env.REGISTRY_USER }}
         password: ${{ env.REGISTRY_PASSWORD }}
 
+
+    - name: Run the image
+      run: docker run ghcr.io/zamachi12/my-new-image:e55e456912c6eb099fb4c1eb25d386e80114aab3 -v ${{github.workspace}}:/workspace -w /workspace build.bash
+      
+    
+
   
      
 
