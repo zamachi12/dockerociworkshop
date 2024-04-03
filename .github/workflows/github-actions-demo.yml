@@ -22,7 +22,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: my-new-image
-        tags: branch -${{ github.ref_name }} ${{ github.sha }}
+        tags: ${{ github.sha }}
         containerfiles: |
           ./containerfile
           
