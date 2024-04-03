@@ -23,7 +23,7 @@ jobs:
         image: my-new-image
         tags: v1 ${{ github.sha }}
         containerfiles: |
-          ./fedoradockercontainer
+          ./containerfile
           
     - name: Log in to ghcr.io
       uses: redhat-actions/podman-login@v1
@@ -38,7 +38,7 @@ jobs:
         image: my-new-image
         tags: v1 ${{ github.sha }}
         containerfiles: |
-          ./fedoradockercontainer
+          ./containerfile
 
     - name: Push To GHCR
       uses: redhat-actions/push-to-registry@v2
